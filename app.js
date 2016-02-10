@@ -1,11 +1,13 @@
-// Require functions
+// Require
 
 var Clock = require('clock');
 var Wakeup = require('wakeup');
 var ajax = require('ajax');
+var Vibe = require('ui/vibe');
 
 // Launch functions
 
+vibrateForEvent();
 registerAllWakupsForNextWeek();
 buildLoadingScreen();
 ajax(
@@ -18,7 +20,8 @@ ajax(
         buildSuccessScreenWithQuoteContent(quoteContent);
     },
     function(error, status, request) {
-        buildFailureScreen();
+      console.log(error);
+      buildFailureScreen();
     }
 );
 
@@ -34,8 +37,8 @@ function registerAllWakupsForNextWeek() {
         'saturday',
         'sunday'
     ];
-    var hour = 10;
-    var minutes = 30;
+    var hour = 19;
+    var minutes = 10;
 
     Wakeup.cancel('all');
     for (var i = 0; i < allDays.length; i++) {
@@ -130,4 +133,15 @@ var author = new UI.Text({
 main.add(author);
 
 main.show();
+}
+
+function vibrateForEvent() {
+  // Query whether we were launched by a wakeup event
+  Wakeup.launch(function(e) {
+  if (e.wakeup) {
+    Vibe.vibrate('long');
+  } else {
+    console.log('Regular launch not by a wakeup event.');
+  }
+});
 }
