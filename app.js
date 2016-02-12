@@ -17,15 +17,14 @@ ajax(
     },
     function(data, status, request) {
         var quoteContent = data.contents.quotes[0].quote;
-        buildSuccessScreenWithQuoteContent(quoteContent);
+        var quoteAuthor = data.contents.quotes[0].author;
+        buildSuccessScreenWithQuoteContent(quoteContent, quoteAuthor);
     },
     function(error, status, request) {
       console.log(error);
       buildFailureScreen();
     }
 );
-
-
 
 function registerAllWakupsForNextWeek() {
     var allDays = [
@@ -53,26 +52,85 @@ function registerAllWakupsForNextWeek() {
     }
 }
 
+
+
+  // Define loading screen
+
 function buildLoadingScreen() {
 
+  var UI = require('ui');
+  var Vector2 = require('vector2');
+
+  var main = new UI.Window({
+      backgroundColor: 'white',
+    });
+
+    // Loading screen test
+    console.log("Currently loading...");
+
+  main.show();
+
+  var loadingMessage = new UI.Text({
+      position: new Vector2(10,70),
+      size: new Vector2(124, 168),
+      font: 'gothic-24-bold',
+      color: '#555555',
+      text: 'Today\'s quote is loading!',
+      textAlign: 'center',
+  });
+
+  main.add(loadingMessage);
+
 }
+
+
+
+  // Define error screen
 
 function buildFailureScreen() {
 
+  var UI = require('ui');
+  var Vector2 = require('vector2');
+
+  var main = new UI.Window({
+      backgroundColor: 'white',
+    });
+
+    // Error screen test
+    console.log("Bug identified.");
+
+  main.show();
+
+  var errorMessage = new UI.Text({
+      position: new Vector2(10,70),
+      size: new Vector2(124, 168),
+      font: 'gothic-24-bold',
+      color: '#555555',
+      text: 'Couldn\'t find today\'s quote... Sorry!',
+      textAlign: 'center',
+  });
+
+  main.add(errorMessage);
+
 }
 
-function buildSuccessScreenWithQuoteContent(quoteContent) {
-    // Import the UI elements
+
+
+  // Define success screen
+
+function buildSuccessScreenWithQuoteContent(quoteContent, quoteAuthor) {
+  // Import the UI elements
 var UI = require('ui');
 var Vector2 = require('vector2');
 
-// Define main window
+  // Define main window
 var main = new UI.Window({
     backgroundColor: 'white',
     scrollable: true,
 });
 
-console.log("Totot");
+  // Success screen test
+  console.log("It's working!");
 
   // Create header style
 var titleBg = new UI.Rect({
@@ -86,7 +144,7 @@ var titleBg = new UI.Rect({
 
 main.add(titleBg);
 
-// Display today's date
+  // Display date
 
 var date = new UI.TimeText({
   position: new Vector2(0, 50),
@@ -99,7 +157,7 @@ var date = new UI.TimeText({
 
 main.add(date);
 
-// Display quote
+  // Display quote
 var quote = new UI.Text({
     position: new Vector2(10,70),
     size: new Vector2(124, 168),
@@ -117,8 +175,8 @@ main.add(quote);
 
 var quoteBottom = quote.position().y + quote.size().y;
 
-console.log(quote.position().y);
-console.log(quote.size().y);
+// console.log(quote.position().y);
+// console.log(quote.size().y);
 
 // Display author
 var author = new UI.Text({
@@ -126,7 +184,7 @@ var author = new UI.Text({
     size: new Vector2(124, 168),
     font: 'gothic-18',
     color: '#555555',
-    text: '— Sophocles',
+    text: quoteAuthor,
     textAlign: 'right',
 });
 
