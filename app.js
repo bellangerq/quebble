@@ -228,8 +228,8 @@ main.on('click', 'select', function() {
     var selectorDesc = new UI.Text({
         position: new Vector2(10,20),
         size: new Vector2(124,30),
-        font: 'gothic-24',
-        color: '#FFFFFF',
+        font: 'gothic-24-bold',
+        color: '#555555',
         text: 'Set daily alarm:',
         textAlign: 'center',
     });
@@ -247,7 +247,7 @@ main.on('click', 'select', function() {
     var hourText = new UI.Text({
         position: new Vector2(8,65),
         size: new Vector2(36,36),
-        font: 'gothic-24',
+        font: 'gothic-24-bold',
         color: '#FFFFFF',
         text: '09',
         textAlign: 'center',
@@ -264,9 +264,9 @@ main.on('click', 'select', function() {
     settings.add(minuteRect);
 
     var minuteText = new UI.Text({
-        position: new Vector2(8,65),
+        position: new Vector2(54,65),
         size: new Vector2(36,36),
-        font: 'gothic-24',
+        font: 'gothic-24-bold',
         color: '#FFFFFF',
         text: '30',
         textAlign: 'center',
@@ -282,18 +282,16 @@ main.on('click', 'select', function() {
 
     settings.add(periodRect);
 
-    var periodText = new UI.Rect({
+    var periodText = new UI.Text({
         position: new Vector2(100,65),
         size: new Vector2(36,36),
-        backgroundColor: '#555555',
-        text: 'AM',
+        font: 'gothic-24-bold',
         color: '#FFFFFF',
-        font: 'gothic-16-bold',
+        text: 'PM',
+        textAlign: 'center',
     });
 
     settings.add(periodText);
-
-  }
 
 });
 
