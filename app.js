@@ -36,8 +36,8 @@ function registerAllWakupsForNextWeek() {
         'saturday',
         'sunday'
     ];
-    var hour = 19;
-    var minutes = 10;
+    var hour = 10;
+    var minutes = 30;
 
     Wakeup.cancel('all');
     for (var i = 0; i < allDays.length; i++) {
@@ -52,7 +52,18 @@ function registerAllWakupsForNextWeek() {
     }
 }
 
+  // Vibrate function
 
+function vibrateForEvent() {
+  // Vibrate only if launched by a wakeup event
+  Wakeup.launch(function(e) {
+  if (e.wakeup) {
+    Vibe.vibrate('long');
+  } else {
+    console.log('Regular launch not by a wakeup event.');
+  }
+});
+}
 
   // Define loading screen
 
@@ -191,15 +202,101 @@ var author = new UI.Text({
 main.add(author);
 
 main.show();
-}
 
-function vibrateForEvent() {
-  // Query whether we were launched by a wakeup event
-  Wakeup.launch(function(e) {
-  if (e.wakeup) {
-    Vibe.vibrate('long');
-  } else {
-    console.log('Regular launch not by a wakeup event.');
+  // Open settings on Select button click
+
+main.on('click', 'select', function() {
+
+  // Define loading screen
+
+  buildSettingsScreen();
+
+  function buildSettingsScreen() {
+
+    var UI = require('ui');
+    var Vector2 = require('vector2');
+
+    var settings = new UI.Window({
+        backgroundColor: 'white',
+      });
+
+    // Try button click
+    console.log('Button clicked!');
+
+    settings.show();
+
+    var selectorDesc = new UI.Text({
+        position: new Vector2(10,20),
+        size: new Vector2(124,30),
+        font: 'gothic-24',
+        color: '#FFFFFF',
+        text: 'Set daily alarm:',
+        textAlign: 'center',
+    });
+
+    settings.add(selectorDesc);
+
+    var hourRect = new UI.Rect({
+        position: new Vector2(8,65),
+        size: new Vector2(36,36),
+        backgroundColor: '#00AA55',
+    });
+
+    settings.add(hourRect);
+
+    var hourText = new UI.Text({
+        position: new Vector2(8,65),
+        size: new Vector2(36,36),
+        font: 'gothic-24',
+        color: '#FFFFFF',
+        text: '09',
+        textAlign: 'center',
+    });
+
+    settings.add(hourText);
+
+    var minuteRect = new UI.Rect({
+        position: new Vector2(54,65),
+        size: new Vector2(36,36),
+        backgroundColor: '#555555',
+    });
+
+    settings.add(minuteRect);
+
+    var minuteText = new UI.Text({
+        position: new Vector2(8,65),
+        size: new Vector2(36,36),
+        font: 'gothic-24',
+        color: '#FFFFFF',
+        text: '30',
+        textAlign: 'center',
+    });
+
+    settings.add(minuteText);
+
+    var periodRect = new UI.Rect({
+        position: new Vector2(100,65),
+        size: new Vector2(36,36),
+        backgroundColor: '#555555',
+    });
+
+    settings.add(periodRect);
+
+    var periodText = new UI.Rect({
+        position: new Vector2(100,65),
+        size: new Vector2(36,36),
+        backgroundColor: '#555555',
+        text: 'AM',
+        color: '#FFFFFF',
+        font: 'gothic-16-bold',
+    });
+
+    settings.add(periodText);
+
   }
+
 });
+
+
+
 }
