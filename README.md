@@ -1,18 +1,18 @@
 # Quebble: one quote every day at your wrist
 
-[Quebble](http://quebble.quentin-bellanger.fr) is a Pebble Classic and Pebble Time app. It's just a simple app that displays a  quote on your watch every day.
+[Quebble](http://quebble.quentin-bellanger.fr) is a Pebble and Pebble Time watchapp. It's just a simple app that displays a  quote on your watch every day.
 
 ## How does it work
 
 1. **Install the app on your watch**. You can find the app here: *[COMING SOON]*
 2. **Set your daily alarm time**. It allows you to choose when you want to receive your quote.
-3. **That's it!** Enjoy your daily quote.
+3. **That's it!** Your quote will be sent every day on your watch. Enjoy!
 
 ## The aim of the project
 
-As I'm not a developer, **it's a challenging way for me to improve my coding skills**. I'm also very interested in connected objects and that was a way to
+As I'm not a developer, **this project is a challenging way for me to improve my coding skills**. I'm also very interested in connected objects and that was a way to know how it works.
 
-It's fully coded using Javascript with **Pebble.js** because I don't know how to code in C (*the main language to create Pebble apps*) and because JS is a language that I'm currently learning.
+It's fully coded using Javascript with **Pebble.js** because it's a language that I'm currently learning.
 
 ## Get in touch
 
