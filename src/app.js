@@ -1,24 +1,22 @@
-// Require
+// REQUIRE
 
 var Clock = require('clock');
 var Wakeup = require('wakeup');
 var ajax = require('ajax');
 var Vibe = require('ui/vibe');
 
-// Launch functions
-
 vibrateForEvent();
 registerAllWakupsForNextWeek();
 buildLoadingScreen();
 ajax(
     {
-        url: 'http://quotes.rest/qod.jsonLOL',
+        url: 'http://quotes.rest/qod.json',
         type: 'json'
     },
     function(data, status, request) {
         var quoteContent = data.contents.quotes[0].quote;
         var quoteAuthor = data.contents.quotes[0].author;
-        buildSuccessScreenWithQuoteContent(quoteContent, quoteAuthor);
+        buildQuoteScreen(quoteContent, quoteAuthor);
     },
     function(error, status, request) {
       console.log(error);
@@ -52,10 +50,12 @@ function registerAllWakupsForNextWeek() {
     }
 }
 
-  // Vibrate function
+// VIBRATE FUNCTION
 
 function vibrateForEvent() {
-  // Vibrate only if launched by a wakeup event
+  
+  // work only if launched by a wakeup event
+  
   Wakeup.launch(function(e) {
   if (e.wakeup) {
     Vibe.vibrate('long');
@@ -65,23 +65,23 @@ function vibrateForEvent() {
 });
 }
 
-  // Define loading screen
+// DEFINE LOADING SCREEN
 
 function buildLoadingScreen() {
 
   var UI = require('ui');
   var Vector2 = require('vector2');
 
-  var main = new UI.Window({
+  var loading = new UI.Window({
       backgroundColor: 'white',
     });
 
-      // Loading screen test
+    // test screen
     console.log("Currently loading...");
 
-  main.show();
+  loading.show();
 
-      // Add loading image
+      // add image
   
   var loadingImage = new UI.Image({
     position: new Vector2(52, 20),
@@ -90,10 +90,10 @@ function buildLoadingScreen() {
     image: 'images/loading.png',
   });
   
-  main.add(loadingImage);
-  main.show();
+  loading.add(loadingImage);
+  loading.show();
   
-      // Add loading message
+      // add  message
   
   var loadingMessage = new UI.Text({
       position: new Vector2(10,70),
@@ -104,29 +104,29 @@ function buildLoadingScreen() {
       textAlign: 'center',
   });
 
-  main.add(loadingMessage);
+  loading.add(loadingMessage);
 
 }
 
 
 
-  // Define error screen
+// DEFINE ERROR SCREEN
 
 function buildFailureScreen() {
 
   var UI = require('ui');
   var Vector2 = require('vector2');
 
-  var main = new UI.Window({
+  var error = new UI.Window({
       backgroundColor: 'white',
     });
 
-      // Error screen test
+      // test screen
     console.log("Bug identified.");
 
-  main.show();
+  error.show();
 
-      // Add error image
+      // add image
   
   var errorImage = new UI.Image({
     position: new Vector2(52, 20),
@@ -135,10 +135,9 @@ function buildFailureScreen() {
     image: 'images/error.png',
   });
   
-  main.add(errorImage);
-  main.show();
+  error.add(errorImage);
   
-      // Add error message
+      // add message
   
   var errorMessage = new UI.Text({
       position: new Vector2(10,70),
@@ -149,30 +148,36 @@ function buildFailureScreen() {
       textAlign: 'center',
   });
 
-  main.add(errorMessage);
+  error.add(errorMessage);
 
+  error.show();
 }
 
 
 
-  // Define success screen
+// DEFINE QUOTE SCREEN
 
-function buildSuccessScreenWithQuoteContent(quoteContent, quoteAuthor) {
-  // Import the UI elements
+function buildQuoteScreen(quoteContent, quoteAuthor) {
+  
+  // import the UI elements
+  
 var UI = require('ui');
 var Vector2 = require('vector2');
 
-  // Define main window
-var main = new UI.Window({
+  // define main window
+  
+var quote = new UI.Window({
     backgroundColor: 'white',
     scrollable: true,
 });
 
-  // Success screen test
+  // test screen
+  
   console.log("It's working!");
 
-  // Create header style
-var titleBg = new UI.Rect({
+  // create header style
+  
+  var header = new UI.Rect({
     position: new Vector2(0,0),
     size: new Vector2(144,40),
     backgroundColor: '#0055AA',
@@ -181,11 +186,22 @@ var titleBg = new UI.Rect({
     font: 'gothic-16-bold',
 });
 
-main.add(titleBg);
+quote.add(header);
 
-  // Display date
+  // add header image
+  
+  var quoteImage = new UI.Image({
+    position: new Vector2(64, 2),
+    size: new Vector2(16, 16),
+    backgroundColor: 'and',
+    image: 'images/quote.png',
+  });
+  
+  quote.add(quoteImage);
+  
+  // display date
 
-var date = new UI.TimeText({
+var quoteDate = new UI.TimeText({
   position: new Vector2(0, 50),
   size: new Vector2(144, 168),
   font: 'gothic-18',
@@ -194,10 +210,10 @@ var date = new UI.TimeText({
   textAlign: 'center',
 });
 
-main.add(date);
+quote.add(quoteDate);
 
-  // Display quote
-var quote = new UI.Text({
+  // display quote
+var content = new UI.Text({
     position: new Vector2(10,70),
     size: new Vector2(124, 168),
     font: 'gothic-24-bold',
@@ -206,18 +222,15 @@ var quote = new UI.Text({
     textAlign: 'left',
 });
 
-main.add(quote);
+quote.add(content);
 
-// Define quote size
+// define quote size
 
 // var qSize = quote.size();
+var quoteBottom = content.position().y + content.size().y;
 
-var quoteBottom = quote.position().y + quote.size().y;
+// display author
 
-// console.log(quote.position().y);
-// console.log(quote.size().y);
-
-// Display author
 var author = new UI.Text({
     position: new Vector2(10,quoteBottom + 10),
     size: new Vector2(124, 168),
@@ -227,15 +240,22 @@ var author = new UI.Text({
     textAlign: 'right',
 });
 
-main.add(author);
+quote.add(author);
 
-main.show();
+quote.show();
 
+  //  back to home on Back button click
+
+//main.on('click', 'back', function() {
+  //console.log('Back button is working');
+
+// });
+  
   // Open settings on Select button click
 
-main.on('click', 'select', function() {
+quote.on('click', 'select', function() {
 
-  // Define loading screen
+// DEFINE SETTINGS SCREEN
 
   buildSettingsScreen();
 
@@ -248,7 +268,8 @@ main.on('click', 'select', function() {
         backgroundColor: 'white',
       });
 
-    // Try button click
+    // test click
+    
     console.log('Button clicked!');
 
     settings.show();
@@ -321,10 +342,59 @@ main.on('click', 'select', function() {
 
     settings.add(periodText);
 
+    settings.on('click', 'select', function() {
+      
+// DEFINE SUCCESS SCREEN
+      
+      buildSuccessScreen();
+
+      function buildSuccessScreen() {
+
+      var UI = require('ui');
+      var Vector2 = require('vector2');
+
+      var success = new UI.Window({
+          backgroundColor: 'white',
+      });
+
+      // test screen
+          
+      console.log("Success screen is working.");
+
+      success.show();
+
+      // add image
+      
+      var successImage = new UI.Image({
+        position: new Vector2(52, 20),
+        size: new Vector2(40, 40),
+        backgroundColor: 'and',
+        image: 'images/success.png',
+      });
+      
+      success.add(successImage);
+      success.show();
+      
+    // add message
+      
+      var successMessage = new UI.Text({
+          position: new Vector2(10,70),
+          size: new Vector2(124, 168),
+          font: 'gothic-24-bold',
+          color: '#555555',
+          text: 'Daily alarm changed. Well done!',
+          textAlign: 'center',
+      });
+
+      success.add(successMessage);
+
+        }
+        
+        });
+      
   }
-
-});
-
+  
+  });
 
 
 }
