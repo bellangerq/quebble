@@ -4,11 +4,20 @@ var Clock = require('clock');
 var Wakeup = require('wakeup');
 var ajax = require('ajax');
 var Vibe = require('ui/vibe');
+var Settings = require('settings');
+
+var loading;
 
 vibrateForEvent();
 registerAllWakupsForNextWeek();
 buildLoadingScreen();
-ajax(
+
+var quoteContent ="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled";
+var quoteAuthor = "toto le fou";
+buildQuoteScreen(quoteContent, quoteAuthor);
+
+
+/*ajax(
     {
         url: 'http://quotes.rest/qod.json',
         type: 'json'
@@ -19,10 +28,11 @@ ajax(
         buildQuoteScreen(quoteContent, quoteAuthor);
     },
     function(error, status, request) {
-      console.log(error);
+      console.log("Error:");
+      console.log(JSON.stringify(error, null, 4));
       buildFailureScreen();
     }
-);
+);*/
 
 function registerAllWakupsForNextWeek() {
     var allDays = [
@@ -34,8 +44,18 @@ function registerAllWakupsForNextWeek() {
         'saturday',
         'sunday'
     ];
-    var hour = 10;
-    var minutes = 30;
+    var hour = Settings.option('hours');
+    var minutes = Settings.option('minutes');
+  
+    if (hour === undefined) {
+      hour = 10;
+    }
+    if (minutes === undefined) {
+      minutes = 30;
+    }
+  
+  console.log("hour is : " + hour);
+  console.log("minutes is : " + minutes);
 
     Wakeup.cancel('all');
     for (var i = 0; i < allDays.length; i++) {
@@ -72,7 +92,7 @@ function buildLoadingScreen() {
   var UI = require('ui');
   var Vector2 = require('vector2');
 
-  var loading = new UI.Window({
+  loading = new UI.Window({
       backgroundColor: 'white',
     });
 
@@ -151,6 +171,7 @@ function buildFailureScreen() {
   error.add(errorMessage);
 
   error.show();
+  loading.hide();
 }
 
 
@@ -212,10 +233,14 @@ var quoteDate = new UI.TimeText({
 
 quote.add(quoteDate);
 
+// Define quote height
+  
+var quoteHeight = calculateUITextHeight(24, 18, quoteContent);
+  
   // display quote
 var content = new UI.Text({
     position: new Vector2(10,70),
-    size: new Vector2(124, 168),
+    size: new Vector2(124, quoteHeight),
     font: 'gothic-24-bold',
     color: '#555555',
     text: quoteContent,
@@ -229,11 +254,15 @@ quote.add(content);
 // var qSize = quote.size();
 var quoteBottom = content.position().y + content.size().y;
 
+// Define author height
+  
+var authorHeight = calculateUITextHeight(18, 25, quoteAuthor);
+  
 // display author
 
 var author = new UI.Text({
     position: new Vector2(10,quoteBottom + 10),
-    size: new Vector2(124, 168),
+    size: new Vector2(124, authorHeight + 10),
     font: 'gothic-18',
     color: '#555555',
     text: quoteAuthor,
@@ -242,15 +271,20 @@ var author = new UI.Text({
 
 quote.add(author);
 
-quote.show();
-
-  //  back to home on Back button click
-
-//main.on('click', 'back', function() {
-  //console.log('Back button is working');
-
-// });
+  // back to home view on back button click
   
+quote.show();
+loading.hide();
+  
+  // close app after 15 seconds
+  
+ /*setTimeout(function() {
+   
+   quote.hide();
+   
+ }, 15000);
+ */
+
   // Open settings on Select button click
 
 quote.on('click', 'select', function() {
@@ -267,10 +301,6 @@ quote.on('click', 'select', function() {
     var settings = new UI.Window({
         backgroundColor: 'white',
       });
-
-    // test click
-    
-    console.log('Button clicked!');
 
     settings.show();
 
@@ -341,12 +371,90 @@ quote.on('click', 'select', function() {
     });
 
     settings.add(periodText);
-
+    
+    var currentlyEditing = hourText;
+    var currentMax = 12;
+    
+    settings.on('click', 'up', function() {
+      if (currentlyEditing == periodText) {
+        if (currentlyEditing.text() == 'AM') {
+          currentlyEditing.text('PM');
+        } else {
+          currentlyEditing.text('AM');          
+        }
+      } else {
+      var currentText = currentlyEditing.text();
+      var currentNumber = parseInt(currentText);
+      var nextNumber = currentNumber + 1;
+      if (nextNumber > currentMax) {
+        nextNumber = 0;
+      }
+      var nextNumberString = intToString(nextNumber);
+      currentlyEditing.text(nextNumberString);
+      }
+    });
+    
+    settings.on('click', 'down', function() {
+      if (currentlyEditing == periodText) {
+        if (currentlyEditing.text() == 'AM') {
+          currentlyEditing.text('PM');
+        } else {
+          currentlyEditing.text('AM');          
+        }        
+      } else {
+      var currentText = currentlyEditing.text();
+      var currentNumber = parseInt(currentText);
+      var nextNumber = currentNumber - 1;
+      if (nextNumber < 0) {
+        nextNumber = currentMax;
+      }
+      var nextNumberString = intToString(nextNumber);
+      currentlyEditing.text(nextNumberString);        
+      }
+    });
+    
+    settings.on('click', 'back', function() {
+      if (currentlyEditing == hourText) {
+        settings.hide();
+      } else if (currentlyEditing == minuteText) {
+        currentlyEditing = hourText;
+        currentMax = 12;
+        minuteRect.backgroundColor('#555555');
+        hourRect.backgroundColor('#0055AA');        
+      } else if (currentlyEditing == periodText) {
+        currentlyEditing = minuteText;
+        currentMax = 59;
+        periodRect.backgroundColor('#555555');
+        minuteRect.backgroundColor('#0055AA');                
+      }
+    });
+    
     settings.on('click', 'select', function() {
-      
+      if (currentlyEditing == hourText) {
+        currentlyEditing = minuteText;
+        currentMax = 59;
+        hourRect.backgroundColor('#555555');
+        minuteRect.backgroundColor('#0055AA');
+      } else if (currentlyEditing == minuteText) {
+        currentlyEditing = periodText;
+        minuteRect.backgroundColor('#555555');
+        periodRect.backgroundColor('#0055AA');
+      } else {
+        saveTime();
+        buildSuccessScreen();        
+      }
 // DEFINE SUCCESS SCREEN
       
-      buildSuccessScreen();
+      function saveTime() {
+        var hours = parseInt(hourText.text());        
+        var minutes = parseInt(minuteText.text());
+        var period = periodText.text();
+        if (period == 'PM') {
+          hours = hours + 12;
+        }
+        Settings.option('hours', hours);
+        Settings.option('minutes', minutes);
+      }
 
       function buildSuccessScreen() {
 
@@ -373,7 +481,7 @@ quote.on('click', 'select', function() {
       });
       
       success.add(successImage);
-      success.show();
+      
       
     // add message
       
@@ -388,6 +496,16 @@ quote.on('click', 'select', function() {
 
       success.add(successMessage);
 
+      success.show();
+        settings.hide();
+        
+        setTimeout(function() {
+          success.hide();
+        }, 2000);
+        
+        success.on('click', function(event) {
+          success.hide();
+        });
         }
         
         });
@@ -397,4 +515,38 @@ quote.on('click', 'select', function() {
   });
 
 
+}
+
+// convert int to string with two digits
+function intToString(int) {
+  if (int < 9) {
+    return "0" + int;
+  } else {
+    return "" + int;
+  }
+}
+
+// Define quote height
+
+function strTruncate(string, width) {
+	string = string.replace(/[\s\r\n]+/, ' ');
+	if (string.length >= width) {
+		return string[width - 1] === ' ' ? string.substr(0, width - 1) : string.substr(0, string.substr(0, width).lastIndexOf(' '));
+	}
+	return string;
+}
+function strTruncateWhole(string, width) {
+	var arr = [];
+	string = string.replace(/[\s\r\n]+/, ' ');
+	var b = 0;
+	while (b < string.length) {
+		arr.push(strTruncate(string.substring(b), width));
+		b += arr[arr.length - 1].length;
+	}
+	return arr;
+}
+function calculateUITextHeight(fontSize, charsPerLine, string) {
+	var split = strTruncateWhole(string, charsPerLine);
+	var height = split.length * fontSize;
+	return height;
 }
