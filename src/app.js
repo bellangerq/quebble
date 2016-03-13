@@ -12,12 +12,10 @@ vibrateForEvent();
 registerAllWakupsForNextWeek();
 buildLoadingScreen();
 
-var quoteContent ="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled";
-var quoteAuthor = "toto le fou";
-buildQuoteScreen(quoteContent, quoteAuthor);
+// var quoteContent ="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled";
+// var quoteAuthor = "toto le fou";
 
-
-/*ajax(
+ajax(
     {
         url: 'http://quotes.rest/qod.json',
         type: 'json'
@@ -32,7 +30,7 @@ buildQuoteScreen(quoteContent, quoteAuthor);
       console.log(JSON.stringify(error, null, 4));
       buildFailureScreen();
     }
-);*/
+);
 
 function registerAllWakupsForNextWeek() {
     var allDays = [
@@ -278,12 +276,11 @@ loading.hide();
   
   // close app after 15 seconds
   
- /*setTimeout(function() {
+setTimeout(function() {
    
    quote.hide();
    
  }, 15000);
- */
 
   // Open settings on Select button click
 
@@ -454,6 +451,8 @@ quote.on('click', 'select', function() {
         }
         Settings.option('hours', hours);
         Settings.option('minutes', minutes);
+        
+        registerAllWakupsForNextWeek();
       }
 
       function buildSuccessScreen() {

@@ -10,7 +10,6 @@
         "media": [
             {
                 "file": "images/menu_icon.png",
-                "menuIcon": true,
                 "name": "IMAGE_MENU_ICON",
                 "type": "bitmap"
             },
@@ -36,6 +35,7 @@
             },
             {
                 "file": "images/quote.png",
+                "menuIcon": true,
                 "name": "IMAGES_QUOTE_PNG",
                 "type": "png"
             },
