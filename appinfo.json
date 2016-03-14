@@ -29,14 +29,19 @@
                 "type": "font"
             },
             {
-                "file": "images/success.png",
-                "name": "IMAGES_SUCCESS_PNG",
+                "file": "images/quote.png",
+                "name": "IMAGES_QUOTE_PNG",
                 "type": "png"
             },
             {
-                "file": "images/quote.png",
+                "file": "images/quote-hp.png",
                 "menuIcon": true,
-                "name": "IMAGES_QUOTE_PNG",
+                "name": "IMAGES_QUOTE_HP_PNG",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/success.png",
+                "name": "IMAGES_SUCCESS_PNG",
                 "type": "png"
             },
             {

@@ -12,10 +12,13 @@ vibrateForEvent();
 registerAllWakupsForNextWeek();
 buildLoadingScreen();
 
-// var quoteContent ="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled";
-// var quoteAuthor = "toto le fou";
+// Delete this once app is ready
 
-ajax(
+var quoteContent ="Dream big and dare to fail.";
+var quoteAuthor = "Norman Vaughan";
+buildQuoteScreen(quoteContent, quoteAuthor);
+
+/*ajax(
     {
         url: 'http://quotes.rest/qod.json',
         type: 'json'
@@ -30,7 +33,7 @@ ajax(
       console.log(JSON.stringify(error, null, 4));
       buildFailureScreen();
     }
-);
+);*/
 
 function registerAllWakupsForNextWeek() {
     var allDays = [
@@ -196,7 +199,7 @@ var quote = new UI.Window({
 
   // create header style
   
-  var header = new UI.Rect({
+var header = new UI.Rect({
     position: new Vector2(0,0),
     size: new Vector2(144,40),
     backgroundColor: '#0055AA',
@@ -205,14 +208,14 @@ var quote = new UI.Window({
     font: 'gothic-16-bold',
 });
 
-quote.add(header);
+  quote.add(header);
 
   // add header image
   
   var quoteImage = new UI.Image({
-    position: new Vector2(64, 2),
-    size: new Vector2(16, 16),
-    backgroundColor: 'and',
+    position: new Vector2(62, 10),
+    size: new Vector2(20, 20),
+    compositing: 'set',
     image: 'images/quote.png',
   });
   
