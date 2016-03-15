@@ -4,12 +4,13 @@
         ""
     ],
     "companyName": "Quentin Bellanger",
-    "longName": "Quebble: Daily Quotes",
+    "longName": "Quebble",
     "projectType": "pebblejs",
     "resources": {
         "media": [
             {
                 "file": "images/menu_icon.png",
+                "menuIcon": true,
                 "name": "IMAGE_MENU_ICON",
                 "type": "bitmap"
             },
@@ -34,12 +35,6 @@
                 "type": "png"
             },
             {
-                "file": "images/quote-hp.png",
-                "menuIcon": true,
-                "name": "IMAGES_QUOTE_HP_PNG",
-                "type": "bitmap"
-            },
-            {
                 "file": "images/success.png",
                 "name": "IMAGES_SUCCESS_PNG",
                 "type": "png"
@@ -62,7 +57,7 @@
         "aplite",
         "basalt"
     ],
-    "uuid": "76875d10-84af-44ef-88ce-44a73ccd1ea5",
+    "uuid": "b10d2a2b-22c0-476e-baa7-eee4e6a37821",
     "versionCode": 1,
     "versionLabel": "1.0",
     "watchapp": {

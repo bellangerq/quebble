@@ -14,11 +14,11 @@ buildLoadingScreen();
 
 // Delete this once app is ready
 
-var quoteContent ="Dream big and dare to fail.";
+/*var quoteContent ="Dream big and dare to fail.";
 var quoteAuthor = "Norman Vaughan";
-buildQuoteScreen(quoteContent, quoteAuthor);
+buildQuoteScreen(quoteContent, quoteAuthor);*/
 
-/*ajax(
+ajax(
     {
         url: 'http://quotes.rest/qod.json',
         type: 'json'
@@ -33,7 +33,7 @@ buildQuoteScreen(quoteContent, quoteAuthor);
       console.log(JSON.stringify(error, null, 4));
       buildFailureScreen();
     }
-);*/
+);
 
 function registerAllWakupsForNextWeek() {
     var allDays = [
@@ -79,7 +79,7 @@ function vibrateForEvent() {
   
   Wakeup.launch(function(e) {
   if (e.wakeup) {
-    Vibe.vibrate('long');
+    Vibe.vibrate('short');
   } else {
     console.log('Regular launch not by a wakeup event.');
   }
@@ -203,7 +203,6 @@ var header = new UI.Rect({
     position: new Vector2(0,0),
     size: new Vector2(144,40),
     backgroundColor: '#0055AA',
-    text: 'Daily Quotes',
     color: '#FFFFFF',
     font: 'gothic-16-bold',
 });
@@ -257,7 +256,7 @@ var quoteBottom = content.position().y + content.size().y;
 
 // Define author height
   
-var authorHeight = calculateUITextHeight(18, 25, quoteAuthor);
+var authorHeight = calculateUITextHeight(17, 25, quoteAuthor);
   
 // display author
 
