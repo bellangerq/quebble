@@ -7,6 +7,15 @@ var Vibe = require('ui/vibe');
 var Settings = require('settings');
 
 var loading;
+    var hour = Settings.option('hours');
+    var minutes = Settings.option('minutes');
+  
+    if (hour === undefined) {
+      hour = 10;
+    }
+    if (minutes === undefined) {
+      minutes = 30;
+    }
 
 vibrateForEvent();
 registerAllWakupsForNextWeek();
@@ -45,15 +54,6 @@ function registerAllWakupsForNextWeek() {
         'saturday',
         'sunday'
     ];
-    var hour = Settings.option('hours');
-    var minutes = Settings.option('minutes');
-  
-    if (hour === undefined) {
-      hour = 10;
-    }
-    if (minutes === undefined) {
-      minutes = 30;
-    }
   
   console.log("hour is : " + hour);
   console.log("minutes is : " + minutes);
@@ -321,13 +321,20 @@ quote.on('click', 'select', function() {
     });
 
     settings.add(hourRect);
+    
+    var isAfternoon = false;
+    var twelveHourTime = hour;
+    if (hour > 12) {
+      twelveHourTime = hour - 12;
+      isAfternoon = true;
+    }
 
     var hourText = new UI.Text({
         position: new Vector2(8,65),
         size: new Vector2(36,36),
         font: 'gothic-24-bold',
         color: '#FFFFFF',
-        text: '09',
+        text: intToString(twelveHourTime),
         textAlign: 'center',
     });
 
@@ -346,7 +353,7 @@ quote.on('click', 'select', function() {
         size: new Vector2(36,36),
         font: 'gothic-24-bold',
         color: '#FFFFFF',
-        text: '30',
+        text: intToString(minutes),
         textAlign: 'center',
     });
 
@@ -360,12 +367,16 @@ quote.on('click', 'select', function() {
 
     settings.add(periodRect);
 
+    var text = 'AM';
+    if (isAfternoon) {
+      text = 'PM';
+    }
     var periodText = new UI.Text({
         position: new Vector2(100,65),
         size: new Vector2(36,36),
         font: 'gothic-24-bold',
         color: '#FFFFFF',
-        text: 'PM',
+        text: text,
         textAlign: 'center',
     });
 
@@ -442,17 +453,20 @@ quote.on('click', 'select', function() {
         saveTime();
         buildSuccessScreen();        
       }
+      
 // DEFINE SUCCESS SCREEN
       
       function saveTime() {
-        var hours = parseInt(hourText.text());        
-        var minutes = parseInt(minuteText.text());
+        var localHours = parseInt(hourText.text());        
+        var localMinutes = parseInt(minuteText.text());
         var period = periodText.text();
         if (period == 'PM') {
-          hours = hours + 12;
+          localHours = localHours + 12;
         }
-        Settings.option('hours', hours);
-        Settings.option('minutes', minutes);
+        Settings.option('hours', localHours);
+        Settings.option('minutes', localMinutes);
+        hour = localHours;
+        minutes = localMinutes;
         
         registerAllWakupsForNextWeek();
       }
@@ -520,7 +534,7 @@ quote.on('click', 'select', function() {
 
 // convert int to string with two digits
 function intToString(int) {
-  if (int < 9) {
+  if (int <= 9) {
     return "0" + int;
   } else {
     return "" + int;
