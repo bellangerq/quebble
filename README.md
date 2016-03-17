@@ -1,4 +1,4 @@
-# Quebble: one quote every day on your wrist
+# Quebble: One Motivational Quote Every Day
 
 Because some days can be tough, [Quebble](https://apps.getpebble.com/en_US/application/568057b24893f90bb2000098) sends you one motivational quote every day on your wrist. Get inspirational ideas and upgrade your mood with a simple quote. Be inspire and move forward!
 
