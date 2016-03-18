@@ -23,11 +23,11 @@ buildLoadingScreen();
 
 // Delete this once app is ready
 
-/*var quoteContent ="Dream big and dare to fail.";
+var quoteContent ="Dream big and dare to faaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaail.";
 var quoteAuthor = "Norman Vaughan";
-buildQuoteScreen(quoteContent, quoteAuthor);*/
+buildQuoteScreen(quoteContent, quoteAuthor);
 
-ajax(
+/*ajax(
     {
         url: 'http://quotes.rest/qod.json',
         type: 'json'
@@ -42,7 +42,7 @@ ajax(
       console.log(JSON.stringify(error, null, 4));
       buildFailureScreen();
     }
-);
+);*/
 
 function registerAllWakupsForNextWeek() {
     var allDays = [
@@ -543,12 +543,23 @@ function intToString(int) {
 
 // Define quote height
 
-function strTruncate(string, width) {
+/*function strTruncate(string, width) {
 	string = string.replace(/[\s\r\n]+/, ' ');
 	if (string.length >= width) {
 		return string[width - 1] === ' ' ? string.substr(0, width - 1) : string.substr(0, string.substr(0, width).lastIndexOf(' '));
 	}
 	return string;
+}*/
+
+function strTruncate(string, width) {
+string = string.replace(/[\s\r\n]+/, ' ');
+if (string.length >= width) {
+    var result = string[width - 1] === ' ' ? string.substr(0, width - 1) : string.substr(0, string.substr(0, width).lastIndexOf(' '));
+    if (result.length === 0)
+      result = string.substr(0, width - 1);
+    return result;
+}
+return string;
 }
 function strTruncateWhole(string, width) {
 	var arr = [];
