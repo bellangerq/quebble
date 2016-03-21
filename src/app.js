@@ -21,13 +21,13 @@ vibrateForEvent();
 registerAllWakupsForNextWeek();
 buildLoadingScreen();
 
-// Delete this once app is ready
+// Comment this once app is ready
 
-var quoteContent ="Dream big and dare to faaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaail.";
-var quoteAuthor = "Norman Vaughan";
-buildQuoteScreen(quoteContent, quoteAuthor);
+/*var quoteContent ="Dream big and dare to fail.";
+var quoteAuthor = "Toto Le Héros";
+buildQuoteScreen(quoteContent, quoteAuthor);*/
 
-/*ajax(
+ajax(
     {
         url: 'http://quotes.rest/qod.json',
         type: 'json'
@@ -42,7 +42,7 @@ buildQuoteScreen(quoteContent, quoteAuthor);
       console.log(JSON.stringify(error, null, 4));
       buildFailureScreen();
     }
-);*/
+);
 
 function registerAllWakupsForNextWeek() {
     var allDays = [
@@ -79,7 +79,7 @@ function vibrateForEvent() {
   
   Wakeup.launch(function(e) {
   if (e.wakeup) {
-    Vibe.vibrate('short');
+    Vibe.vibrate('long');
   } else {
     console.log('Regular launch not by a wakeup event.');
   }
@@ -120,7 +120,7 @@ function buildLoadingScreen() {
       position: new Vector2(10,70),
       size: new Vector2(124, 168),
       font: 'gothic-24-bold',
-      color: '#555555',
+      color: '#000000',
       text: 'Don\'t panic! Today\'s quote is coming!',
       textAlign: 'center',
   });
@@ -164,7 +164,7 @@ function buildFailureScreen() {
       position: new Vector2(10,70),
       size: new Vector2(124, 168),
       font: 'gothic-24-bold',
-      color: '#555555',
+      color: '#000000',
       text: 'Couldn\'t find today\'s quote... Sorry!',
       textAlign: 'center',
   });
@@ -226,7 +226,7 @@ var quoteDate = new UI.TimeText({
   position: new Vector2(0, 50),
   size: new Vector2(144, 168),
   font: 'gothic-18',
-  color: '#555555',
+  color: '#000000',
   text: '%m/%d/%Y',
   textAlign: 'center',
 });
@@ -242,7 +242,7 @@ var content = new UI.Text({
     position: new Vector2(10,70),
     size: new Vector2(124, quoteHeight),
     font: 'gothic-24-bold',
-    color: '#555555',
+    color: '#000000',
     text: quoteContent,
     textAlign: 'left',
 });
@@ -251,12 +251,11 @@ quote.add(content);
 
 // define quote size
 
-// var qSize = quote.size();
 var quoteBottom = content.position().y + content.size().y;
 
 // Define author height
   
-var authorHeight = calculateUITextHeight(17, 25, quoteAuthor);
+var authorHeight = calculateUITextHeight(18, 25, quoteAuthor);
   
 // display author
 
@@ -264,7 +263,7 @@ var author = new UI.Text({
     position: new Vector2(10,quoteBottom + 10),
     size: new Vector2(124, authorHeight + 10),
     font: 'gothic-18',
-    color: '#555555',
+    color: '#000000',
     text: quoteAuthor,
     textAlign: 'right',
 });
@@ -307,7 +306,7 @@ quote.on('click', 'select', function() {
         position: new Vector2(10,20),
         size: new Vector2(124,30),
         font: 'gothic-24-bold',
-        color: '#555555',
+        color: '#000000',
         text: 'Set daily alarm:',
         textAlign: 'center',
     });
@@ -504,7 +503,7 @@ quote.on('click', 'select', function() {
           position: new Vector2(10,70),
           size: new Vector2(124, 168),
           font: 'gothic-24-bold',
-          color: '#555555',
+          color: '#000000',
           text: 'Daily alarm changed. Well done!',
           textAlign: 'center',
       });
@@ -543,15 +542,15 @@ function intToString(int) {
 
 // Define quote height
 
-/*function strTruncate(string, width) {
+function strTruncate(string, width) {
 	string = string.replace(/[\s\r\n]+/, ' ');
 	if (string.length >= width) {
 		return string[width - 1] === ' ' ? string.substr(0, width - 1) : string.substr(0, string.substr(0, width).lastIndexOf(' '));
 	}
 	return string;
-}*/
+}
 
-function strTruncate(string, width) {
+/*function strTruncate(string, width) {
 string = string.replace(/[\s\r\n]+/, ' ');
 if (string.length >= width) {
     var result = string[width - 1] === ' ' ? string.substr(0, width - 1) : string.substr(0, string.substr(0, width).lastIndexOf(' '));
@@ -560,7 +559,7 @@ if (string.length >= width) {
     return result;
 }
 return string;
-}
+}*/
 function strTruncateWhole(string, width) {
 	var arr = [];
 	string = string.replace(/[\s\r\n]+/, ' ');
