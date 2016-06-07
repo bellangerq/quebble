@@ -1,3 +1,65 @@
+// DETECT PEBBLE MODEL
+var info = Pebble.getActiveWatchInfo(); // Returns watch info
+var platform = info.platform; // Returns a string of the platform name
+var isChalk = platform === 'chalk';
+
+// DEFINING SCREEN WIDTH
+var screenWidth = isChalk ? 180 : 144;
+
+// LOADING POSITIONING FOR CHALK
+var xLoadingImagePosition = isChalk ? 70 : 52;
+var yLoadingImagePosition = isChalk ? 25 : 25;
+var xLoadingMessagePosition = isChalk ? 28 : 10;
+var yLoadingMessagePosition = isChalk ? 80 : 80;
+
+// ERROR POSITIONING FOR CHALK
+var xErrorImagePosition = isChalk ? 70 : 52;
+var yErrorImagePosition = isChalk ? 25 : 25;
+var xErrorMessagePosition = isChalk ? 28 : 10;
+var yErrorMessagePosition = isChalk ? 80 : 80;
+
+// QUOTE POSITIONING FOR CHALK
+  // HEADER
+var xQuoteReclanglePosition = isChalk ? 0 : 0;
+var yQuoteReclanglePosition = isChalk ? 0 : 0;
+var xQuoteImagePosition = isChalk ? 80 : 62;
+var yQuoteImagePosition = isChalk ? 10 : 10;
+
+  // QUOTE
+var xQuoteQuotePosition = isChalk ? 28 : 10;
+
+  // AUTHOR
+// var xQuoteQuotePosition = isChalk ? 28 : 10;
+
+// SETTINGS POSITIONING FOR CHALK
+  // DESCRIPTION
+var xSettingsSelectorDescPosition = isChalk ? 28 : 10;
+var ySettingsSelectorDescPosition = isChalk ? 50 : 30;
+
+  // HOUR
+var xSettingsHourRectPosition = isChalk ? 27 : 9;
+var ySettingsHourRectPosition = isChalk ? 90 : 70;
+var xSettingsHourTextPosition = isChalk ? 27 : 9;
+var ySettingsHourTextPosition = isChalk ? 90 : 70;
+
+  // MINUTE
+var xSettingsMinuteRectPosition = isChalk ? 72 : 54;
+var ySettingsMinuteRectPosition = isChalk ? 90 : 70;
+var xSettingsMinuteTextPosition = isChalk ? 72 : 54;
+var ySettingsMinuteTextPosition = isChalk ? 90 : 70;
+
+  // PERIOD
+var xSettingsPeriodRectPosition = isChalk ? 117 : 99;
+var ySettingsPeriodRectPosition = isChalk ? 90 : 70;
+var xSettingsPeriodTextPosition = isChalk ? 117 : 99;
+var ySettingsPeriodTextPosition = isChalk ? 90 : 70;
+
+// SUCCESS POSITIONING FOR CHALK
+var xSuccessImagePosition = isChalk ? 70 : 52;
+var ySuccessImagePosition = isChalk ? 25 : 25;
+var xSuccessMessagePosition = isChalk ? 28 : 10;
+var ySuccessMessagePosition = isChalk ? 80 : 80;
+
 // INITIAL REQUIRE
 var Clock = require('clock');
 var Wakeup = require('wakeup');
@@ -23,7 +85,7 @@ registerAllWakupsForNextWeek();
 buildLoadingScreen();
 
 // CONTENT FOR TESTING
-// var quoteContent ="Dream big and dare to fail. Dream big and dare to fail. Dream big and dare to fail.";
+// var quoteContent ="Dreambig and dareto fail. Dream bigand daretofail. Dream big and dare to fail.";
 // var quoteAuthor = "Toto Le Héros";
 // buildQuoteScreen(quoteContent, quoteAuthor);
 
@@ -100,7 +162,7 @@ function buildLoadingScreen() {
 
 // IMAGE
   var loadingImage = new UI.Image({
-    position: new Vector2(52, 25),
+    position: new Vector2(xLoadingImagePosition, yLoadingImagePosition),
     size: new Vector2(40, 40),
     image: 'images/loading.png',
   });
@@ -109,7 +171,7 @@ function buildLoadingScreen() {
 
 // CONTENT
   var loadingMessage = new UI.Text({
-      position: new Vector2(10,75),
+      position: new Vector2(xLoadingMessagePosition,yLoadingMessagePosition),
       size: new Vector2(124, 168),
       font: 'gothic-24-bold',
       color: '#000000',
@@ -118,6 +180,13 @@ function buildLoadingScreen() {
   });
 
   loading.add(loadingMessage);
+
+  // CLOSE SCREEN OVER TIME
+  setTimeout(function() {
+
+    loading.hide();
+
+  }, 15000);
 
 }
 
@@ -135,7 +204,7 @@ function buildFailureScreen() {
 
 // IMAGE
 var errorImage = new UI.Image({
-  position: new Vector2(52, 25),
+  position: new Vector2(xErrorImagePosition, yErrorImagePosition),
   size: new Vector2(40, 40),
   image: 'images/error.png',
 });
@@ -144,7 +213,7 @@ error.add(errorImage);
 
 // CONTENT
   var errorMessage = new UI.Text({
-      position: new Vector2(10,75),
+      position: new Vector2(xErrorMessagePosition,yErrorMessagePosition),
       size: new Vector2(124, 168),
       font: 'gothic-24-bold',
       color: '#000000',
@@ -170,8 +239,8 @@ var quote = new UI.Window({
 
 // HEADER
 var header = new UI.Rect({
-    position: new Vector2(0,0),
-    size: new Vector2(144,40),
+    position: new Vector2(xQuoteReclanglePosition,yQuoteReclanglePosition),
+    size: new Vector2(screenWidth,40),
     backgroundColor: '#0055AA',
     color: '#FFFFFF',
     font: 'gothic-16-bold',
@@ -181,7 +250,7 @@ var header = new UI.Rect({
 
 // IMAGE
   var quoteImage = new UI.Image({
-    position: new Vector2(62, 10),
+    position: new Vector2(xQuoteImagePosition, yQuoteImagePosition),
     size: new Vector2(20, 20),
     compositing: 'set',
     image: 'images/quote.png',
@@ -192,7 +261,7 @@ var header = new UI.Rect({
 // DATE
 var quoteDate = new UI.TimeText({
   position: new Vector2(0, 50),
-  size: new Vector2(144, 168),
+  size: new Vector2(screenWidth, 168),
   font: 'gothic-18',
   color: '#000000',
   text: '%m/%d/%Y',
@@ -207,8 +276,8 @@ var quoteHeight = calculateUITextHeight(24, 18, quoteContent);
 
 // QUOTE
 var content = new UI.Text({
-    position: new Vector2(10,70),
-    size: new Vector2(124, quoteHeight),
+    position: new Vector2(xQuoteQuotePosition,70),
+    size: new Vector2(screenWidth - (xLoadingMessagePosition * 2), quoteHeight),
     font: 'gothic-24-bold',
     color: '#000000',
     text: quoteContent,
@@ -235,12 +304,12 @@ quote.add(author);
 
 quote.show();
 
-// CLOSE APP OVER TIME
+// CLOSE SCREEN OVER TIME
 setTimeout(function() {
 
   quote.hide();
 
- }, 15000);
+}, 30000);
 
  quote.on('click', 'select', function() {
 
@@ -259,7 +328,7 @@ setTimeout(function() {
     settings.show();
 
      var selectorDesc = new UI.Text({
-         position: new Vector2(10,20),
+         position: new Vector2(xSettingsSelectorDescPosition,ySettingsSelectorDescPosition),
          size: new Vector2(124,30),
          font: 'gothic-24-bold',
          color: '#000000',
@@ -270,7 +339,7 @@ setTimeout(function() {
      settings.add(selectorDesc);
 
      var hourRect = new UI.Rect({
-         position: new Vector2(8,65),
+         position: new Vector2(xSettingsHourRectPosition,ySettingsHourRectPosition),
          size: new Vector2(36,36),
          backgroundColor: '#0055AA',
      });
@@ -285,7 +354,7 @@ setTimeout(function() {
      }
 
      var hourText = new UI.Text({
-         position: new Vector2(8,65),
+         position: new Vector2(xSettingsHourTextPosition,ySettingsHourTextPosition),
          size: new Vector2(36,36),
          font: 'gothic-24-bold',
          color: '#FFFFFF',
@@ -296,7 +365,7 @@ setTimeout(function() {
      settings.add(hourText);
 
      var minuteRect = new UI.Rect({
-         position: new Vector2(54,65),
+         position: new Vector2(xSettingsMinuteRectPosition,ySettingsMinuteRectPosition),
          size: new Vector2(36,36),
          backgroundColor: '#555555',
      });
@@ -304,7 +373,7 @@ setTimeout(function() {
      settings.add(minuteRect);
 
      var minuteText = new UI.Text({
-         position: new Vector2(54,65),
+         position: new Vector2(xSettingsMinuteTextPosition,ySettingsMinuteTextPosition),
          size: new Vector2(36,36),
          font: 'gothic-24-bold',
          color: '#FFFFFF',
@@ -315,7 +384,7 @@ setTimeout(function() {
      settings.add(minuteText);
 
      var periodRect = new UI.Rect({
-         position: new Vector2(100,65),
+         position: new Vector2(xSettingsPeriodRectPosition,ySettingsPeriodRectPosition),
          size: new Vector2(36,36),
          backgroundColor: '#555555',
      });
@@ -328,7 +397,7 @@ setTimeout(function() {
      }
 
      var periodText = new UI.Text({
-         position: new Vector2(100,65),
+         position: new Vector2(xSettingsPeriodTextPosition,ySettingsPeriodTextPosition),
          size: new Vector2(36,36),
          font: 'gothic-24-bold',
          color: '#FFFFFF',
@@ -439,7 +508,7 @@ setTimeout(function() {
 
 // IMAGE
      var successImage = new UI.Image({
-       position: new Vector2(52, 25),
+       position: new Vector2(xSuccessImagePosition, ySuccessImagePosition),
        size: new Vector2(40, 40),
        image: 'images/success.png',
      });
@@ -449,7 +518,7 @@ setTimeout(function() {
 
 // CONTENT
      var successMessage = new UI.Text({
-         position: new Vector2(10,75),
+         position: new Vector2(xSuccessMessagePosition,ySuccessMessagePosition),
          size: new Vector2(124, 168),
          font: 'gothic-24-bold',
          color: '#000000',
