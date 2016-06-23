@@ -1,112 +1,80 @@
-// DETECT PEBBLE MODEL
-var info = Pebble.getActiveWatchInfo(); // Returns watch info
-var platform = info.platform; // Returns a string of the platform name
-var isChalk = platform === 'chalk';
-
-// DEFINING SCREEN WIDTH
-var screenWidth = isChalk ? 180 : 144;
-
-// LOADING POSITIONING FOR CHALK
-var xLoadingImagePosition = isChalk ? 70 : 52;
-var yLoadingImagePosition = isChalk ? 25 : 25;
-var xLoadingMessagePosition = isChalk ? 28 : 10;
-var yLoadingMessagePosition = isChalk ? 80 : 80;
-
-// ERROR POSITIONING FOR CHALK
-var xErrorImagePosition = isChalk ? 70 : 52;
-var yErrorImagePosition = isChalk ? 25 : 25;
-var xErrorMessagePosition = isChalk ? 28 : 10;
-var yErrorMessagePosition = isChalk ? 80 : 80;
-
-// QUOTE POSITIONING FOR CHALK
-  // HEADER
-var xQuoteReclanglePosition = isChalk ? 0 : 0;
-var yQuoteReclanglePosition = isChalk ? 0 : 0;
-var xQuoteImagePosition = isChalk ? 80 : 62;
-var yQuoteImagePosition = isChalk ? 10 : 10;
-
-  // QUOTE
-var xQuoteQuotePosition = isChalk ? 28 : 10;
-
-  // AUTHOR
-// var xQuoteQuotePosition = isChalk ? 28 : 10;
-
-// SETTINGS POSITIONING FOR CHALK
-  // DESCRIPTION
-var xSettingsSelectorDescPosition = isChalk ? 28 : 10;
-var ySettingsSelectorDescPosition = isChalk ? 50 : 30;
-
-  // HOUR
-var xSettingsHourRectPosition = isChalk ? 27 : 9;
-var ySettingsHourRectPosition = isChalk ? 90 : 70;
-var xSettingsHourTextPosition = isChalk ? 27 : 9;
-var ySettingsHourTextPosition = isChalk ? 90 : 70;
-
-  // MINUTE
-var xSettingsMinuteRectPosition = isChalk ? 72 : 54;
-var ySettingsMinuteRectPosition = isChalk ? 90 : 70;
-var xSettingsMinuteTextPosition = isChalk ? 72 : 54;
-var ySettingsMinuteTextPosition = isChalk ? 90 : 70;
-
-  // PERIOD
-var xSettingsPeriodRectPosition = isChalk ? 117 : 99;
-var ySettingsPeriodRectPosition = isChalk ? 90 : 70;
-var xSettingsPeriodTextPosition = isChalk ? 117 : 99;
-var ySettingsPeriodTextPosition = isChalk ? 90 : 70;
-
-// SUCCESS POSITIONING FOR CHALK
-var xSuccessImagePosition = isChalk ? 70 : 52;
-var ySuccessImagePosition = isChalk ? 25 : 25;
-var xSuccessMessagePosition = isChalk ? 28 : 10;
-var ySuccessMessagePosition = isChalk ? 80 : 80;
-
-// INITIAL REQUIRE
 var Clock = require('clock');
 var Wakeup = require('wakeup');
-var ajax = require('ajax');
 var Vibe = require('ui/vibe');
 var Settings = require('settings');
+var Info = Pebble.getActiveWatchInfo(); // Returns watch info
+var Platform = info.platform; // Returns a string of the platform name
 
-// FIND TIME
-var loading;
-    var hour = Settings.option('hours');
-    var minutes = Settings.option('minutes');
+var GetQuote = require('../repositories/quote_repository');
 
-    if (hour === undefined) {
-      hour = 10;
+var CreateLoadingScreen = require('../windows/loading_window');
+var CreateQuoteScreen = require('../windows/quote_window');
+
+/// Load the correct layout
+var IsChalk = platform === 'chalk';
+var Layout = isChalk ? require('./layout/chalk_layout') : require('./layout/basalt_layout');
+
+/// Reference all UI.Window
+var Windows = {
+  loading:  null,
+  success:  null,
+  quote:    null,
+  settings: null,
+  error:    null
+};
+
+/// Setup global settings
+var AppSettings = {
+  hour: Settings.option('hours'),
+  minutes: Settings.option('minutes')
+};
+
+if (AppSettings.hour === undefined) {
+  AppSettings.hour = 10;
+}
+if (AppSettings.minutes === undefined) {
+  AppSettings.minutes = 30;
+}
+
+var dismissWindow(win, delay) {
+  setTimeout(function() {
+    win.hide();
+  }, delay * 1000);
+}
+
+var main = function() {
+  registerVibrateForEvent();
+  registerAllWakupsForNextWeek();
+
+  /// Start by creating the loading screen while fetching qod
+  Windows.loading = CreateLoadingScreen(Layout.loading);
+
+  /// Present the loading screen to the user
+  Windows.loading.show();
+
+  /// Dismiss the loading screen after 15s
+  dismissWindow(Windows.loading, 15);
+
+  /// Fetch quote
+  GetQuote(function(content, author, error){
+    if content !== undefined && author !== undefined {
+      /// Show the quote screen
+      Windows.quote = CreateQuoteScreen(Layout.quote, content, author);
+      Windows.quote.show();
+
+      dismissWindow(Windows.quote, 30);
+
+
+    } else {
+
+      /// Show the failure screen
+
     }
-    if (minutes === undefined) {
-      minutes = 30;
-    }
+  });
 
-// CALL FUNCTIONS
-vibrateForEvent();
-registerAllWakupsForNextWeek();
-buildLoadingScreen();
+};
 
-// CONTENT FOR TESTING
-// var quoteContent ="Dreambig and dareto fail. Dream bigand daretofail. Dream big and dare to fail.";
-// var quoteAuthor = "Toto Le Héros";
-// buildQuoteScreen(quoteContent, quoteAuthor);
-
-
-// AJAX CALL FOR QUOTE API
-ajax(
-    {
-        url: 'http://quotes.rest/qod.json',
-        type: 'json'
-    },
-    function(data, status, request) {
-        var quoteContent = data.contents.quotes[0].quote;
-        var quoteAuthor = data.contents.quotes[0].author;
-        buildQuoteScreen(quoteContent, quoteAuthor);
-    },
-    function(error, status, request) {
-        console.log("Error:");
-        console.log(JSON.stringify(error, null, 4));
-        buildFailureScreen();
-    }
-);
+main();
 
 // DAILY WAKE UP
 function registerAllWakupsForNextWeek() {
@@ -137,58 +105,15 @@ function registerAllWakupsForNextWeek() {
 }
 
 // VIBRATE FUNCTION
-function vibrateForEvent() {
-
+var registerVibrateForEvent = function() {
   Wakeup.launch(function(e) {
-  if (e.wakeup) {
-    Vibe.vibrate('long');
-  } else {
-    console.log('Regular launch not by a wakeup event.');
-  }
-});
-}
-
-// LOADING SCREEN
-function buildLoadingScreen() {
-
-  var UI = require('ui');
-  var Vector2 = require('vector2');
-
-  var loading = new UI.Window({
-      backgroundColor: 'white',
-    });
-
-  loading.show();
-
-// IMAGE
-  var loadingImage = new UI.Image({
-    position: new Vector2(xLoadingImagePosition, yLoadingImagePosition),
-    size: new Vector2(40, 40),
-    image: 'images/loading.png',
+    if (e.wakeup) {
+      Vibe.vibrate('long');
+    } else {
+      console.log('Regular launch not by a wakeup event.');
+    }
   });
-
-  loading.add(loadingImage);
-
-// CONTENT
-  var loadingMessage = new UI.Text({
-      position: new Vector2(xLoadingMessagePosition,yLoadingMessagePosition),
-      size: new Vector2(124, 168),
-      font: 'gothic-24-bold',
-      color: '#000000',
-      text: 'Don\'t panic! Today\'s quote is coming!',
-      textAlign: 'center',
-  });
-
-  loading.add(loadingMessage);
-
-  // CLOSE SCREEN OVER TIME
-  setTimeout(function() {
-
-    loading.hide();
-
-  }, 15000);
-
-}
+};
 
 // ERROR SCREEN
 function buildFailureScreen() {
@@ -228,88 +153,9 @@ error.add(errorImage);
 // QUOTE SCREEN
 function buildQuoteScreen(quoteContent, quoteAuthor) {
 
-var UI = require('ui');
-var Vector2 = require('vector2');
-
-// MAIN WINDOW
-var quote = new UI.Window({
-    backgroundColor: 'white',
-    scrollable: true,
-});
-
-// HEADER
-var header = new UI.Rect({
-    position: new Vector2(xQuoteReclanglePosition,yQuoteReclanglePosition),
-    size: new Vector2(screenWidth,40),
-    backgroundColor: '#0055AA',
-    color: '#FFFFFF',
-    font: 'gothic-16-bold',
-});
-
-  quote.add(header);
-
-// IMAGE
-  var quoteImage = new UI.Image({
-    position: new Vector2(xQuoteImagePosition, yQuoteImagePosition),
-    size: new Vector2(20, 20),
-    compositing: 'set',
-    image: 'images/quote.png',
-  });
-
-  quote.add(quoteImage);
-
-// DATE
-var quoteDate = new UI.TimeText({
-  position: new Vector2(0, 50),
-  size: new Vector2(screenWidth, 168),
-  font: 'gothic-18',
-  color: '#000000',
-  text: '%m/%d/%Y',
-  textAlign: 'center',
-});
-
-quote.add(quoteDate);
-
-// CALCULATE QUOTE HEIGHT
-var quoteHeight = calculateUITextHeight(24, 18, quoteContent);
-
-
-// QUOTE
-var content = new UI.Text({
-    position: new Vector2(xQuoteQuotePosition,70),
-    size: new Vector2(screenWidth - (xLoadingMessagePosition * 2), quoteHeight),
-    font: 'gothic-24-bold',
-    color: '#000000',
-    text: quoteContent,
-    textAlign: 'left',
-});
-
-quote.add(content);
-
 // CALCULATE AUTHOR HEIGHT
 var quoteBottom = content.position().y + content.size().y;
 var authorHeight = calculateUITextHeight(18, 25, quoteAuthor);
-
-// AUTHOR
-var author = new UI.Text({
-    position: new Vector2(10,quoteBottom + 10),
-    size: new Vector2(124, authorHeight + 10),
-    font: 'gothic-18',
-    color: '#000000',
-    text: quoteAuthor,
-    textAlign: 'right',
-});
-
-quote.add(author);
-
-quote.show();
-
-// CLOSE SCREEN OVER TIME
-setTimeout(function() {
-
-  quote.hide();
-
-}, 30000);
 
  quote.on('click', 'select', function() {
 
