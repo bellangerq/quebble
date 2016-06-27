@@ -19,10 +19,10 @@ module.exports = {
     quote:  RectHelper.MakeRect(10, 70, 0, 0)
   },
   settings: {
-    desc:   { x: 10, y: 30 },
-    hour:   { x: 9,  y: 70, size: 36 },
-    minute: { x: 54, y: 70, size: 36 },
-    period: { x: 99, y: 70, size: 36 }
+    desc:   RectHelper.MakeRect(10, 30, 124, 30),
+    hour:   RectHelper.MakeRect(9, 70, 36, 36),
+    minute: RectHelper.MakeRect(54, 70, 36, 36),
+    period: RectHelper.MakeRect(99, 70, 36, 36)
   },
   success: {
     image: RectHelper.MakeRect(52, 25, 40, 40),
