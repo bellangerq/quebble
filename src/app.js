@@ -6,9 +6,12 @@ var Info = Pebble.getActiveWatchInfo(); // Returns watch info
 var Platform = info.platform; // Returns a string of the platform name
 
 var GetQuote = require('../repositories/quote_repository');
+var GetQuote = require('../utils/timeout.js');
 
+var CreateFailureScreen = require('../windows/failure_window');
 var CreateLoadingScreen = require('../windows/loading_window');
 var CreateQuoteScreen = require('../windows/quote_window');
+var CreateSuccessScreen = require('../windows/success_window');
 
 /// Load the correct layout
 var IsChalk = platform === 'chalk';
@@ -36,12 +39,6 @@ if (AppSettings.minutes === undefined) {
   AppSettings.minutes = 30;
 }
 
-var dismissWindow(win, delay) {
-  setTimeout(function() {
-    win.hide();
-  }, delay * 1000);
-}
-
 var main = function() {
   registerVibrateForEvent();
   registerAllWakupsForNextWeek();
@@ -64,11 +61,10 @@ var main = function() {
 
       dismissWindow(Windows.quote, 30);
 
-
     } else {
 
       /// Show the failure screen
-
+      Windows.quote.show();
     }
   });
 
@@ -275,6 +271,7 @@ function strTruncateWhole(string, width) {
 	}
 	return arr;
 }
+
 function calculateUITextHeight(fontSize, charsPerLine, string) {
 	var split = strTruncateWhole(string, charsPerLine);
 	var height = split.length * fontSize;
