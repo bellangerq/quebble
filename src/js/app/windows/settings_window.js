@@ -1,6 +1,6 @@
 var UI = require('ui');
-var RH = require('../rect_helper');
-var StringUtils = require('../string_utils');
+var Geometry = require('../helpers/geometry');
+var StringUtils = require('../helpers/string_utils');
 
 var CURRENT_EDITING_RECT;
 var HIGHLIGHT_COLOR = "#0055AA";
@@ -12,8 +12,8 @@ var createSettingsWindow = function(layout) {
   var settings = new UI.Window({ backgroundColor: 'white' });
 
   var selectorDesc = new UI.Text({
-      position:   RH.MakeVector(layout.header.origin),
-      size:       RH.MakeVector(layout.header.size),
+      position:   Geometry.Vector(layout.text.origin),
+      size:       Geometry.Vector(layout.text.size),
       font:       'gothic-24-bold',
       color:      '#000000',
       text:       'Set daily alarm:',

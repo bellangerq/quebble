@@ -3,7 +3,7 @@ var ajax = require('ajax');
 function QuoteRepository() {
 
   this.fetchQuote = function(completion) {
-    completion("Mother fucker holy shit, fuck you BITCH", "Nany la pute");
+     completion("Mother fucker holy shit, fuck you BITCH", "Nany la pute");
   // completion(null, null, "A fucking error");
   //   ajax(
   //     {

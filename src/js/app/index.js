@@ -4,6 +4,7 @@ var QuoteRepository = require('./repositories/quote_repository');
 var LoadingPageCreator = require('./windows/loading_window');
 var QuotePageCreator = require('./windows/quote_window');
 var FailurePageCreator = require('./windows/failure_window');
+var SettingsPageCreator = require('./windows/settings_window');
 
 /// Display the loading page
 var loadingPage = LoadingPageCreator(IS_CHALK);
@@ -28,4 +29,13 @@ quoteRepository.fetchQuote(function(content, author, error){
   }
 
   loadingPage.hide();
+
+  /// Here we should present the settings screen on click
+  quotePage.on('click', 'select', function() {
+
+    var settingsPage = SettingsPageCreator(IS_CHALK);
+    settings.show();
+
+    });
+
 });
