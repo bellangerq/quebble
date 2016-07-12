@@ -49,8 +49,6 @@ var createQuoteWindow = function(isChalk, content, author) {
   quoteWindow.add(quoteDate);
 
   var quoteHeight = StringUtils.calculateUITextHeight(24, 18, content);
-  console.log('quoteHeight: ' + quoteHeight);
-
   var SCREEN_WIDTH = Feature.resolution().x;
 
   var quoteContent = new UI.Text({

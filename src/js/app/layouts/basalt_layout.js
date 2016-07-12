@@ -21,13 +21,13 @@ module.exports = {
     quote:  Geometry.Rect(10, 70, 0, 0)
   },
   settings: {
-    desc:   Geometry.Rect(10, 30, 124, 30),
-    hour:   Geometry.Rect(9, 70, 36, 36),
-    minute: Geometry.Rect(54, 70, 36, 36),
-    period: Geometry.Rect(99, 70, 36, 36)
+    text:    Geometry.Rect(10, 30, 124, 30),
+    hours:   Geometry.Rect(9, 70, 36, 36),
+    minutes: Geometry.Rect(54, 70, 36, 36),
+    period:  Geometry.Rect(99, 70, 36, 36)
   },
   success: {
-    image: Geometry.Rect(52, 25, 40, 40),
-    text:  Geometry.Rect(10, 80, 124, 168)
+    image: Geometry.Rect((SCREEN_WIDTH - 40) / 2.0, 25, 40, 40),
+    text:  Geometry.Rect(10, 80, SCREEN_WIDTH - 20, 168)
   }
 };

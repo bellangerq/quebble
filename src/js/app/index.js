@@ -5,6 +5,7 @@ var LoadingPageCreator = require('./windows/loading_window');
 var QuotePageCreator = require('./windows/quote_window');
 var FailurePageCreator = require('./windows/failure_window');
 var SettingsPageCreator = require('./windows/settings_window');
+var SuccessPageCreator = require('./windows/success_window');
 
 /// Display the loading page
 var loadingPage = LoadingPageCreator(IS_CHALK);
@@ -20,22 +21,30 @@ quoteRepository.fetchQuote(function(content, author, error){
     var failPage = FailurePageCreator(IS_CHALK, 'Couldn\'t find today\'s quote... Sorry!');
     failPage.show();
 
-  } else {
-    console.log('Getting quote: \n\"' + content + '\"\n' + author);
-
-    /// Here we should present the quote screen
-    var quotePage = QuotePageCreator(IS_CHALK, content, author);
-    quotePage.show();
+    return;
   }
+
+  console.log('Getting quote: \n\"' + content + '\"\n' + author);
+
+  /// Here we should present the quote screen
+  var quotePage = QuotePageCreator(IS_CHALK, content, author);
+  quotePage.show();
 
   loadingPage.hide();
 
   /// Here we should present the settings screen on click
   quotePage.on('click', 'select', function() {
-
     var settingsPage = SettingsPageCreator(IS_CHALK);
-    settings.show();
+    settingsPage.settingsWindowDidSavePreferences = function() {
+      var success = SuccessPageCreator(IS_CHALK);
+      success.show();
+      settingsPage.hide();
 
-    });
-
+      setTimeout(function(){
+        quotePage.show();
+        success.hide();
+      }, 5000);
+    };
+    settingsPage.show();
+  });
 });

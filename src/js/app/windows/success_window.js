@@ -1,41 +1,39 @@
 var UI = require('ui');
-var RectHelper = require('../rect_helper');
-var timeOut = require('../utils/timeout');
+var Geometry = require('../helpers/geometry');
 
-var  buildSuccessScreen = function() {
+var createSuccessWindow = function(isChalk) {
+  var layout;
+
+  if (isChalk) {
+    layout = require('../layouts/chalk_layout').success;
+  } else {
+    layout = require('../layouts/basalt_layout').success;
+  }
+
   var success = new UI.Window({
     backgroundColor: 'white',
-});
+  });
 
-// Add image
-var successImage = new UI.Image({
-  position: RectHelper.MakeVector(layout.image.origin),
-  size:     RectHelper.MakeVector(layout.image.size),
-  image:    'images/success.png',
-});
+  // Add image
+  var successImage = new UI.Image({
+    position: Geometry.Vector(layout.image.origin),
+    size:     Geometry.Vector(layout.image.size),
+    image:    'images/success.png',
+  });
 
-success.add(successImage);
+  success.add(successImage);
 
-// Add text
-var successMessage = new UI.Text({
-    position:   RectHelper.MakeVector(layout.text.origin),
-    size:       RectHelper.MakeVector(layout.text.size),
-    font:       'gothic-24-bold',
-    color:      '#000000',
-    text:       'Daily alarm changed. Well done!',
-    textAlign:  'center',
-});
+  // Add text
+  var successMessage = new UI.Text({
+      position:   Geometry.Vector(layout.text.origin),
+      size:       Geometry.Vector(layout.text.size),
+      font:       'gothic-24-bold',
+      color:      '#000000',
+      text:       'Daily alarm changed. Well done!',
+      textAlign:  'center',
+  });
 
-success.add(successMessage);
-
-// success.show();
-// settings.hide();
-//
-//   success.on('click', function(event) {
-//   success.hide();
-//   });
-
-setTimeout(success, 2000);
+  success.add(successMessage);
 
   return success;
 };
