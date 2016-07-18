@@ -13,6 +13,13 @@ var createQuoteWindow = function(isChalk, content, author) {
     layout = require('../layouts/basalt_layout').quote;
   }
 
+  /// Align text dependkng on display
+  if(Pebble.getActiveWatchInfo().platform === 'chalk') {
+    var alignment = 'center';
+  } else {
+    var alignment = 'left';
+  }
+
   var quoteWindow = new UI.Window({
     backgroundColor: 'white',
     scrollable: true
@@ -57,7 +64,7 @@ var createQuoteWindow = function(isChalk, content, author) {
       font:       'gothic-24-bold',
       color:      '#000000',
       text:       content,
-      textAlign:  'left'
+      textAlign:  alignment,
   });
 
   quoteWindow.add(quoteContent);
@@ -71,7 +78,7 @@ var createQuoteWindow = function(isChalk, content, author) {
       font:      'gothic-18',
       color:     '#000000',
       text:      author,
-      textAlign: 'right',
+      textAlign: alignment,
   });
 
   quoteWindow.add(author);
