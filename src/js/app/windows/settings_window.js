@@ -12,14 +12,6 @@ var PM_FORMAT = 'PM';
 var createSettingsWindow = function(isChalk) {
   var userSettings = SettingsRepository.getTimeSettings();
 
-  if (userSettings.hours === undefined || userSettings.hours == null) {
-    userSettings.hours = 10;
-  }
-
-  if (userSettings.minutes === undefined || userSettings.minutes == null) {
-    userSettings.minutes = 30;
-  }
-
   var IS_AFTERNOON = false;
   if (userSettings.hours > 12) {
     userSettings.hours -= 12;
@@ -72,7 +64,7 @@ var createSettingsWindow = function(isChalk) {
   var inputs = [ hourModel, minuteModel, periodModel ];
 
   inputs.forEach(function(input){
-    
+
     var square = new UI.Text({
       position: Geometry.Vector(input.layout.origin),
       size:     Geometry.Vector(input.layout.size),

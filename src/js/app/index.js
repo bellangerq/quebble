@@ -7,6 +7,10 @@ var FailurePageCreator = require('./windows/failure_window');
 var SettingsPageCreator = require('./windows/settings_window');
 var SuccessPageCreator = require('./windows/success_window');
 
+var SettingsRepository = require('./repositories/settings_repository');
+
+SettingsRepository.registerAllWakupsForNextWeek();
+
 /// Display the loading page
 var loadingPage = LoadingPageCreator(IS_CHALK);
 loadingPage.show();
