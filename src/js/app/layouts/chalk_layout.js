@@ -18,12 +18,12 @@ module.exports = {
     header: Geometry.Rect(0, 0, SCREEN_WIDTH, 40),
     image:  Geometry.Rect((SCREEN_WIDTH - 20) / 2, 10, 20, 20),
     date:   Geometry.Rect(0, 50, SCREEN_WIDTH, 168),
-    quote:  Geometry.Rect(10, 70, 0, 0)
+    quote:  Geometry.Rect(10, 70, 0, 0),
   },
   settings: {
-    desc:   Geometry.Rect(10, 30, 124, 30),
-    hour:   Geometry.Rect(9, 70, 36, 36),
-    minute: Geometry.Rect(54, 70, 36, 36),
+    text:   Geometry.Rect(10, 30, 124, 30),
+    hours:   Geometry.Rect(9, 70, 36, 36),
+    minutes: Geometry.Rect(54, 70, 36, 36),
     period: Geometry.Rect(99, 70, 36, 36)
   },
   success: {

@@ -35,6 +35,7 @@ QuoteRepository.fetchQuote(function(content, author, error){
 
   /// Here we should present the settings screen on click
   quotePage.on('click', 'select', function() {
+    console.log('settings page');
     var settingsPage = SettingsPageCreator(IS_CHALK);
     settingsPage.settingsWindowDidSavePreferences = function() {
       var success = SuccessPageCreator(IS_CHALK);

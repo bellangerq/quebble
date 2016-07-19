@@ -60,7 +60,7 @@ var createQuoteWindow = function(isChalk, content, author) {
       font:       'gothic-24-bold',
       color:      '#000000',
       text:       content,
-      textAlign:  alignment,
+      textAlign:  isChalk ? 'center' : 'left',
   });
 
   quoteWindow.add(quoteContent);
@@ -70,11 +70,11 @@ var createQuoteWindow = function(isChalk, content, author) {
 
   var author = new UI.Text({
       position:  new Vector2(10, quoteBottom + 10),
-      size:      new Vector2(124, authorHeight + 10),
+      size:      new Vector2(SCREEN_WIDTH - 20, authorHeight + 10),
       font:      'gothic-18',
       color:     '#000000',
       text:      author,
-      textAlign: alignment,
+      textAlign:  isChalk ? 'center' : 'right',
   });
 
   quoteWindow.add(author);
