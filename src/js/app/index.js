@@ -12,8 +12,7 @@ var loadingPage = LoadingPageCreator(IS_CHALK);
 loadingPage.show();
 
 /// Download Quote
-var quoteRepository = new QuoteRepository();
-quoteRepository.fetchQuote(function(content, author, error){
+QuoteRepository.fetchQuote(function(content, author, error){
   if (error !== undefined) {
     console.log('Got an error while downloading quote: ' + JSON.stringify(error));
 
@@ -23,8 +22,6 @@ quoteRepository.fetchQuote(function(content, author, error){
 
     return;
   }
-
-  console.log('Getting quote: \n\"' + content + '\"\n' + author);
 
   /// Here we should present the quote screen
   var quotePage = QuotePageCreator(IS_CHALK, content, author);

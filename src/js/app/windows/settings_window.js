@@ -1,7 +1,7 @@
 var UI = require('ui');
 var Geometry = require('../helpers/geometry');
 var StringUtils = require('../helpers/string_utils');
-var Settings = require('settings');
+var SettingsRepository = require('../repositories/settings_repository');
 
 var CURRENT_EDITING_RECT;
 var HIGHLIGHT_COLOR = "#0055AA";
@@ -10,18 +10,19 @@ var AM_FORMAT = 'AM';
 var PM_FORMAT = 'PM';
 
 var createSettingsWindow = function(isChalk) {
-  var USER_HOURS = Settings.option('hours');
-  var USER_MINUTES = Settings.option('minutes');
-  if (USER_HOURS === undefined || USER_HOURS == null) {
-    USER_HOURS = 10;
+  var userSettings = SettingsRepository.getTimeSettings();
+
+  if (userSettings.hours === undefined || userSettings.hours == null) {
+    userSettings.hours = 10;
   }
-  if (USER_MINUTES === undefined || USER_MINUTES == null) {
-    USER_MINUTES = 30;
+
+  if (userSettings.minutes === undefined || userSettings.minutes == null) {
+    userSettings.minutes = 30;
   }
 
   var IS_AFTERNOON = false;
-  if (USER_HOURS > 12) {
-    USER_HOURS -= 12;
+  if (userSettings.hours > 12) {
+    userSettings.hours -= 12;
     IS_AFTERNOON = true;
   }
 
@@ -45,11 +46,9 @@ var createSettingsWindow = function(isChalk) {
 
   settings.add(selectorDesc);
 
-  console.log('hours: ' + USER_HOURS + ', minutes: ' + USER_MINUTES);
-
   var hourModel = {
     layout:   layout.hours,
-    text:     StringUtils.ensureTwoDigits(USER_HOURS),
+    text:     StringUtils.ensureTwoDigits(userSettings.hours),
     editing:  true,
     square:   undefined,
     maxValue: 12
@@ -57,7 +56,7 @@ var createSettingsWindow = function(isChalk) {
 
   var minuteModel = {
     layout:   layout.minutes,
-    text:     StringUtils.ensureTwoDigits(USER_MINUTES),
+    text:     StringUtils.ensureTwoDigits(userSettings.minutes),
     editing:  false,
     square:   undefined,
     maxValue: 59
@@ -129,16 +128,18 @@ var createSettingsWindow = function(isChalk) {
       minuteModel.square.backgroundColor(UNHIGHLIGHT_COLOR);
       periodModel.square.backgroundColor(HIGHLIGHT_COLOR);
     } else {
-      var parsedHours = parseInt(hourModel.square.text);
-      var parsedMinutes = parseInt(hourModel.square.text);
-      var period = periodModel.square.text;
+      var parsedHours = parseInt(hourModel.square.text());
+      var parsedMinutes = parseInt(hourModel.square.text());
+      var period = periodModel.square.text();
+
       if (period == PM_FORMAT){
         parsedHours += 12;
       }
-      Settings.option('hours', parsedHours);
-      Settings.option('minutes', parsedMinutes);
-      USER_HOURS = parsedHours;
-      USER_MINUTES = parsedMinutes;
+
+      SettingsRepository.updateTimeSettings({
+        hours: parsedHours,
+        minutes: parsedMinutes,
+      });
 
       if (settings.settingsWindowDidSavePreferences !== undefined) {
         settings.settingsWindowDidSavePreferences();
