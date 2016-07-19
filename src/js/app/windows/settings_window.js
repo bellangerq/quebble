@@ -36,12 +36,12 @@ var createSettingsWindow = function(isChalk) {
   var settings = new UI.Window({ backgroundColor: 'white' });
 
   var selectorDesc = new UI.Text({
-      position:   Geometry.Vector(layout.text.origin),
-      size:       Geometry.Vector(layout.text.size),
-      font:       'gothic-24-bold',
-      color:      '#000000',
-      text:       'Set daily alarm:',
-      textAlign:  'center'
+    position:   Geometry.Vector(layout.text.origin),
+    size:       Geometry.Vector(layout.text.size),
+    font:       'gothic-24-bold',
+    color:      '#000000',
+    text:       'Set daily alarm:',
+    textAlign:  'center'
   });
 
   settings.add(selectorDesc);
@@ -72,7 +72,7 @@ var createSettingsWindow = function(isChalk) {
   var inputs = [ hourModel, minuteModel, periodModel ];
 
   inputs.forEach(function(input){
-
+    
     var square = new UI.Text({
       position: Geometry.Vector(input.layout.origin),
       size:     Geometry.Vector(input.layout.size),

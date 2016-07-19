@@ -6,10 +6,13 @@ var Feature = require('platform/feature');
 
 var createQuoteWindow = function(isChalk, content, author) {
   var layout;
+  var alignment;
 
   if (isChalk) {
+    alignment = 'center';
     layout = require('../layouts/chalk_layout').quote;
   } else {
+    alignment = 'left';
     layout = require('../layouts/basalt_layout').quote;
   }
 
@@ -57,7 +60,7 @@ var createQuoteWindow = function(isChalk, content, author) {
       font:       'gothic-24-bold',
       color:      '#000000',
       text:       content,
-      textAlign:  'left'
+      textAlign:  alignment,
   });
 
   quoteWindow.add(quoteContent);
@@ -71,7 +74,7 @@ var createQuoteWindow = function(isChalk, content, author) {
       font:      'gothic-18',
       color:     '#000000',
       text:      author,
-      textAlign: 'right',
+      textAlign: alignment,
   });
 
   quoteWindow.add(author);
