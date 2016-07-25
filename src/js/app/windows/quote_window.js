@@ -18,7 +18,9 @@ var createQuoteWindow = function(isChalk, content, author) {
 
   var quoteWindow = new UI.Window({
     backgroundColor: 'white',
-    scrollable: true
+    scrollable: true,
+    // scrolling page per page or line by line
+    paging: false,
   });
 
   var header = new UI.Rect({
@@ -56,7 +58,7 @@ var createQuoteWindow = function(isChalk, content, author) {
 
   var quoteContent = new UI.Text({
       position:   Geometry.Vector(layout.quote.origin),
-      size:       new Vector2(SCREEN_WIDTH - 20, quoteHeight),
+      size:       new Vector2(SCREEN_WIDTH - 50, quoteHeight),
       font:       'gothic-24-bold',
       color:      '#000000',
       text:       content,
@@ -69,8 +71,8 @@ var createQuoteWindow = function(isChalk, content, author) {
   var authorHeight = StringUtils.calculateUITextHeight(18, 25, author);
 
   var author = new UI.Text({
-      position:  new Vector2(10, quoteBottom + 10),
-      size:      new Vector2(SCREEN_WIDTH - 20, authorHeight + 10),
+      position:  new Vector2(40, quoteBottom + 10),
+      size:      new Vector2(SCREEN_WIDTH - 80, authorHeight + 30),
       font:      'gothic-18',
       color:     '#000000',
       text:      author,

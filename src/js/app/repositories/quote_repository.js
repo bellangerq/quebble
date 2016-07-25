@@ -2,7 +2,7 @@ var ajax = require('ajax');
 
 function QuoteRepository() {
   this.fetchQuote = function(completion) {
-    completion("Mother fucker holy shit, fuck you BITCH", "Nany la pute");
+    completion("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla blandit erat lorem, ac placerat enim ultricies sed. In faucibus, nunc id consectetur eleifend, enim lacus interdum nisi, in dictum tellus arcu et arcu.", "Nany la pute");
     // ajax(
     //   {
     //     url: 'http://quotes.rest/qod.json',
