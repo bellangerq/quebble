@@ -121,7 +121,7 @@ var createSettingsWindow = function(isChalk) {
       periodModel.square.backgroundColor(HIGHLIGHT_COLOR);
     } else {
       var parsedHours = parseInt(hourModel.square.text());
-      var parsedMinutes = parseInt(hourModel.square.text());
+      var parsedMinutes = parseInt(minuteModel.square.text());
       var period = periodModel.square.text();
 
       if (period == PM_FORMAT){

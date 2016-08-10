@@ -2,6 +2,8 @@ var Wakeup = require('wakeup');
 var Clock = require('clock');
 var Settings = require('settings');
 
+module.exports = new SettingsRepository();
+
 function SettingsRepository() {
   this.getTimeSettings = function() {
     var hours = Settings.option('hours');
@@ -22,8 +24,12 @@ function SettingsRepository() {
   };
 
   this.updateTimeSettings = function(options) {
+    console.log(JSON.stringify(options));
+
     Settings.option('hours', options.hours);
     Settings.option('minutes', options.minutes);
+
+    this.registerAllWakupsForNextWeek();
   };
 
   this.registerAllWakupsForNextWeek = function() {
@@ -53,5 +59,3 @@ function SettingsRepository() {
 
   };
 };
-
-module.exports = new SettingsRepository();
