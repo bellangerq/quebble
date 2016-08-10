@@ -3,8 +3,8 @@
   "capabilities": [
     "configurable"
   ],
-  "companyName": "Meiguro",
-  "longName": "Pebble.js",
+  "companyName": "Quentin Bellanger",
+  "longName": "Quebble",
   "resources": {
     "media": [
       {
@@ -51,15 +51,15 @@
     ]
   },
   "sdkVersion": "3",
-  "shortName": "Pebble.js",
+  "shortName": "Quebble",
   "targetPlatforms": [
     "aplite",
     "basalt",
     "chalk"
   ],
-  "uuid": "133215f0-cf20-4c05-997b-3c9be5a64e5b",
+  "uuid": "b10d2a2b-22c0-476e-baa7-eee4e6a37821",
   "versionCode": 1,
-  "versionLabel": "0.4",
+  "versionLabel": "2.1",
   "watchapp": {
     "watchface": false
   }
