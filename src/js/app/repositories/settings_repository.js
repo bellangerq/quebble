@@ -50,11 +50,7 @@ function SettingsRepository() {
     for (var i = 0; i < allDays.length; i++) {
       var day = allDays[i];
       var timeUntilNextDay = Clock.weekday(day, options.hours, options.minutes);
-      Wakeup.schedule(
-        { time: timeUntilNextDay },
-        function(e) {
-          console.log("I woke up");
-        });
+      Wakeup.schedule({ time: timeUntilNextDay });
     }
 
   };

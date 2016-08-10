@@ -53,12 +53,14 @@ var createQuoteWindow = function(isChalk, content, author) {
 
   quoteWindow.add(quoteDate);
 
-  var quoteHeight = StringUtils.calculateUITextHeight(24, 18, content);
   var SCREEN_WIDTH = Feature.resolution().x;
 
+  var quoteHeight = StringUtils.calculateUITextHeight(24, 18, content);
+
+  var contentPadding = isChalk ? 50 : 20;
   var quoteContent = new UI.Text({
       position:   Geometry.Vector(layout.quote.origin),
-      size:       new Vector2(SCREEN_WIDTH - 50, quoteHeight),
+      size:       new Vector2(SCREEN_WIDTH - contentPadding, quoteHeight),
       font:       'gothic-24-bold',
       color:      '#000000',
       text:       content,
@@ -70,14 +72,21 @@ var createQuoteWindow = function(isChalk, content, author) {
   var quoteBottom = quoteContent.position().y + quoteContent.size().y;
   var authorHeight = StringUtils.calculateUITextHeight(18, 25, author);
 
+  var paddingBottom = isChalk ? 30 : 5;
   var author = new UI.Text({
-      position:  new Vector2(40, quoteBottom + 10),
-      size:      new Vector2(SCREEN_WIDTH - 80, authorHeight + 30),
-      font:      'gothic-18',
-      color:     '#000000',
-      text:      author,
-      textAlign:  isChalk ? 'center' : 'right',
+      position:   new Vector2(10, quoteBottom + 5),
+      size:       new Vector2(SCREEN_WIDTH - 20, authorHeight + paddingBottom),
+      font:       'gothic-18',
+      color:      '#000000',
+      text:       author,
+      textAlign:  isChalk ? 'center' : 'right'
   });
+
+  if (isChalk) {
+    author.size = new Vector2(SCREEN_WIDTH - 50, authorHeight + 30);
+  } else {
+    author.size = new Vector2(SCREEN_WIDTH - 50, authorHeight + 30);
+  }
 
   quoteWindow.add(author);
 
