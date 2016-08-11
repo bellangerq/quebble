@@ -1,6 +1,7 @@
 var Wakeup = require('wakeup');
 var Clock = require('clock');
 var Settings = require('settings');
+var Vibe = require('ui/vibe');
 
 module.exports = new SettingsRepository();
 
@@ -46,6 +47,12 @@ function SettingsRepository() {
     ];
 
     Wakeup.cancel('all');
+
+    Wakeup.launch(function(e) {
+      if (e.wakeup) {
+        Vibe.vibrate('long');
+      }
+    });
 
     for (var i = 0; i < allDays.length; i++) {
       var day = allDays[i];
